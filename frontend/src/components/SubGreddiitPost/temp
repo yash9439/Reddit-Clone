@@ -1,0 +1,52 @@
+# filename is Dockerfile
+# For Backend
+FROM node:16-alpine
+
+RUN apk add python3 make g++
+
+
+USER node
+RUN mkdir -p /home/node/app
+WORKDIR /home/node/app
+
+COPY --chown=node:node package*.json
+RUN npm ci
+COPY --chown=node:node . .
+
+EXPOSE 5000
+ENTRYPOINT [ "npm", "start" ]
+
+# in terminal
+# docker build . -t server:v1
+
+
+# For FrontEnd
+FROM node:16-alpine
+
+RUN apk add python3 make g++
+
+
+USER node
+RUN mkdir -p /home/node/app
+WORKDIR /home/node/app
+
+COPY --chown=node:node package*.json .
+RUN npm ci
+COPY --chown=node:node . .
+
+EXPOSE 3000
+ENTRYPOINT [ "npm", "start" ]
+
+
+
+# docker run server:v1
+# docker run -e PORT=5000 server:v1
+
+# docker run -e PORT=5000 -p 6000:5000 server:v1
+
+
+# docker 
+
+# nginx
+
+# 
